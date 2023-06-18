@@ -1,0 +1,14 @@
+type: 'application'
+language: 'go'
+
+project:
+  name: 'management.api'
+  description: 'an api for managing the tuts platform'
+  channel: '#tuts'
+  owner: ''
+  maintainers: ['michael abbott']
+
+tasks: 
+  dev: 
+    command: 'make dev'
+    local: true

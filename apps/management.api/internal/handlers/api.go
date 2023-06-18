@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -14,7 +15,7 @@ type API struct {
 }
 
 type APIOptions struct {
-	port string
+	Port string
 }
 
 func (a *API) Mount() {
@@ -22,6 +23,10 @@ func (a *API) Mount() {
 	a.r.Use(middleware.RealIP)
 	a.r.Use(middleware.Logger)
 	a.r.Use(middleware.Recoverer)
+
+	a.r.Route("/v1", func(r chi.Router) {
+		r.Get("/heartbeat", heartbeat)
+	})
 }
 
 func (a *API) Server() *http.Server {
@@ -32,12 +37,13 @@ func (a *API) Server() *http.Server {
 }
 
 func (a *API) Start() error {
+	log.Println(fmt.Sprintf("starting server on port %s", a.port))
 	return a.Server().ListenAndServe()
 }
 
 func NewAPI(r *chi.Mux, opts APIOptions) *API {
 	return &API{
 		r:    r,
-		port: opts.port,
+		port: opts.Port,
 	}
 }

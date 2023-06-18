@@ -1,10 +1,21 @@
 package main
 
+import (
+	"flag"
+
+	"management.api/internal/config"
+)
+
 func main() {
-	if err := run(); err != nil {
+	c := config.New()
+
+	flag.StringVar(&c.Port, "port", c.Port, "override port")
+	flag.Parse()
+
+	if err := run(c); err != nil {
 	}
 }
 
-func run() error {
+func run(c *config.Config) error {
 	return nil
 }
